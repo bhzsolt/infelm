@@ -7,6 +7,7 @@ import struct
 from sys import argv
 from os import listdir
 from os import path
+from os import mkdir
 
 def add(list_, current):
     index = len(list_)-1
@@ -90,17 +91,21 @@ def decode(input_file, output_file=None):
 
 ################################################################################
 
-if len(argv) == 1:
-    images = listdir('input')
-else:
-    images = argv[1:]
+if __name__ == '__main__':
+    if len(argv) == 1:
+        images = listdir('input')
+    else:
+        images = argv[1:]
 
-for image in images:
-    input_file = 'input/' + image
-    output_file_bh = 'output/' + image + '.bh'
-    output_file_bmp = 'output/' + image
-    if not path.isfile(input_file):
-        print('{} not a valid bmp file'.format(input_file))
-        continue
-    encode(input_file, output_file_bh)
-    decode(output_file_bh, output_file_bmp)
+    if not path.isdir('output'):
+        mkdir('output')
+
+    for image in images:
+        input_file = 'input/' + image
+        output_file_bh = 'output/' + image + '.bh'
+        output_file_bmp = 'output/' + image
+        if not path.isfile(input_file):
+            print('{} not a valid bmp file'.format(input_file))
+            continue
+        encode(input_file, output_file_bh)
+        decode(output_file_bh, output_file_bmp)

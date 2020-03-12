@@ -67,29 +67,30 @@ def mutual_information(A_, A, B):
 
 ################################################################################
 
-px, py0, py1 = interp_arg()
-py = py0 * (1-px) + py1 * px
+if __name__ == '__main__': 
+    px, py0, py1 = interp_arg()
+    py = py0 * (1-px) + py1 * px
 
-X = (1-px, px)
-Y = (1-py, py)
+    X = (1-px, px)
+    Y = (1-py, py)
 
-Y0 = (1-py0, py0)
-Y1 = (1-py1, py1)
-Y_ = (Y0, Y1)
+    Y0 = (1-py0, py0)
+    Y1 = (1-py1, py1)
+    Y_ = (Y0, Y1)
 
-px0 = mutual_prob(Y_, X, 0, 1)/Y[0]
-px1 = mutual_prob(Y_, X, 1, 1)/Y[1]
+    px0 = mutual_prob(Y_, X, 0, 1)/Y[0]
+    px1 = mutual_prob(Y_, X, 1, 1)/Y[1]
 
-X0 = (1-px0, px0)
-X1 = (1-px1, px1)
-X_ = (X0, X1)
+    X0 = (1-px0, px0)
+    X1 = (1-px1, px1)
+    X_ = (X0, X1)
 
-print('H(X)	= {:6.4f}'.format(entropy(X)))
-print('H(Y)	= {:6.4f}'.format(entropy(Y)))
-print('H(X,Y)	= {:6.4f}'.format(mutual_entropy(Y_, X)))
-print('H(X|Y)	= {:6.4f}'.format(cond_entropy(X_, Y)))
-print('H(Y|X)	= {:6.4f}'.format(cond_entropy(Y_, X)))
-print('I(X,Y)	= {:6.4f}'.format(mutual_information(Y_, Y, X)))
-#print('I(Y,X)	= {:6.4f}'.format(mutual_information(X_, X, Y)))
-print('D(X||Y)	= {:6.4f}'.format(relative_entropy(X, Y)))
-print('D(Y||X)	= {:6.4f}'.format(relative_entropy(Y, X)))
+    print('H(X)	= {:6.4f}'.format(entropy(X)))
+    print('H(Y)	= {:6.4f}'.format(entropy(Y)))
+    print('H(X,Y)	= {:6.4f}'.format(mutual_entropy(Y_, X)))
+    print('H(X|Y)	= {:6.4f}'.format(cond_entropy(X_, Y)))
+    print('H(Y|X)	= {:6.4f}'.format(cond_entropy(Y_, X)))
+    print('I(X,Y)	= {:6.4f}'.format(mutual_information(Y_, Y, X)))
+    #print('I(Y,X)	= {:6.4f}'.format(mutual_information(X_, X, Y)))
+    print('D(X||Y)	= {:6.4f}'.format(relative_entropy(X, Y)))
+    print('D(Y||X)	= {:6.4f}'.format(relative_entropy(Y, X)))
