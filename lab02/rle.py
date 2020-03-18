@@ -37,7 +37,7 @@ def write_color(fp, color):
 
 def read_color(data):
     length = struct.unpack('I', data[0:4])[0]
-    print(length)
+    #print(length)
     color = []
     for r in range(length):
         value, count = struct.unpack('HH', data[(r*4+4):(r*4+8)])
@@ -58,7 +58,7 @@ def encode(input_file, output_file=None):
 
     header = data[:offset]
     r,g,b = create_runs(data[offset:], w, h)
-    print('rgb:', len(r), len(g), len(b))
+    #print('rgb:', len(r), len(g), len(b))
 
     with open(output_file, 'wb') as f:
         f.write(header)
@@ -94,18 +94,23 @@ def decode(input_file, output_file=None):
 if __name__ == '__main__':
     if len(argv) == 1:
         images = listdir('input')
+        for i in range(len(images)):
+            images[i] = 'input/' + images[i]
     else:
         images = argv[1:]
 
     if not path.isdir('output'):
         mkdir('output')
 
-    for image in images:
-        input_file = 'input/' + image
+    for input_file in images:
+        split = input_file.split('/')
+        image = split[len(split)-1]
         output_file_bh = 'output/' + image + '.bh'
         output_file_bmp = 'output/' + image
         if not path.isfile(input_file):
             print('{} not a valid bmp file'.format(input_file))
             continue
+        print('encoding', input_file, '...')
         encode(input_file, output_file_bh)
+        print('decoding', output_file_bh, '...')
         decode(output_file_bh, output_file_bmp)

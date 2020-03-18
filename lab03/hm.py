@@ -6,12 +6,15 @@
 import struct
 from sys import argv
 from math import log2
+from os import path
+from os import listdir
 
-def error():
-    print('usage: {} -e/d input'.format(argv[0]))
+def help(exitcode):
+    print('usage: {} -e/d/h input'.format(argv[0]))
     print('\t-e: encode')
     print('\t-d: decode')
-    exit(1)
+    print('\t-h: display this help')
+    exit(exitcode)
 
 class PriorityQueue:
     def __init__(self):
@@ -224,17 +227,33 @@ def decode(input_file):
         for e in decoded_data:
             f.write(struct.pack('B', e))
 
-
 ################################################################################
 
-if len(argv) < 3:
-    error()
+if __name__ == '__main__':
+    if len(argv) < 3:
+        help(1)
+    else:
+        tmp = argv[2:]
+        inputs = []
+        for t in tmp:
+            if path.isdir(t):
+                dircontents = listdir(t)
+                for f in dircontents:
+                    inputs.append(t + '/' + f)
+            else:
+                inputs.append(t)
 
-if argv[1] == '-e':
-    encode(argv[2])
-    exit(0)
-elif argv[1] == '-d':
-    decode(argv[2])
-    exit(0)
+    if argv[1] == '-e':
+        for input_file in inputs:
+            print('encoding', input_file, '...')
+            encode(input_file)
+        exit(0)
+    elif argv[1] == '-d':
+        for input_file in inputs:
+            print('decoding', input_file, '...')
+            decode(input_file)
+        exit(0)
+    elif argv[1] == '-h':
+        help(0)
 
-error()
+    help(1)
