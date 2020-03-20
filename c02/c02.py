@@ -192,8 +192,15 @@ if __name__ == '__main__':
         help(1)
     
     file_name = argv[1]
-    with open(file_name, 'r') as f:
+    f = None
+    try:
+        f = open(file_name, 'r')
         contents = f.read().strip()
+    except:
+        help(1)
+    finally:
+        if f != None:
+            f.close()
     
     try:
         x = numpy.array(list(map(float, contents.split('\n'))))
