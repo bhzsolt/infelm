@@ -72,6 +72,7 @@ class Tree:
         elif shannon_fano_data == None:
             self.huffmanFromList(huffman_data)
         else:
+            shannon_fano_data.sort(reverse=True)
             root = self.shannonFanoFromList(shannon_fano_data)
             self.left = root.left
             self.right = root.right
@@ -226,3 +227,5 @@ if __name__ == '__main__':
     print('x entropiaja:\t\t\t\t{}'.format(H))
     print('atlagos huffman kodszohossz:\t\t{:3.2f}'.format(E_huffman))
     print('atlagos shannon-fano kodszohossz:\t{:3.2f}'.format(E_shannon_fano))
+
+    print(shannon_fano_tree)

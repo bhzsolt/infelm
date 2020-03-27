@@ -147,6 +147,19 @@ class Tree:
                 node = node.right
         return code
 
+    def findCode(self, elem, code):
+        if self.data == elem:
+            return code
+        elif self.left == None and self.right == None:
+            return None
+
+        left = self.left.findCode(elem, code + '0')
+        right = self.right.findCode(elem, code + '1')
+        if left == None:
+            return right
+        else:
+            return left
+
 def encode(input_file):
     output_file = input_file + '.hm'
     with open(input_file, 'rb') as f:
