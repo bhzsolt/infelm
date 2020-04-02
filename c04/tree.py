@@ -1,45 +1,8 @@
-#!/bin/python3
 # Bodoki-Halmen Zsolt
 # bzim1700
 # 531/1
 
-import numpy
-from sys import argv
-
-def help(exit_code):
-    print('usage: {} input'.format(argv[0]))
-    print('\tinput:\tprobabilities of X probability variable, each on a new line')
-    print('\t\tthe sum of probabilities should be equal to 1.0')
-    exit(exit_code)
-
-class PriorityQueue:
-    def __init__(self):
-        self.queue = []
-
-    def push(self, leaf):
-        if len(self.queue) == 0:
-            self.queue.append(leaf)
-            return
-        index = 0
-        while index < len(self.queue) and self.queue[index].prob < leaf.prob:
-            index += 1
-        if index == len(self.queue):
-            self.queue.append(leaf)
-            return
-        self.queue.insert(index, leaf)
-
-    def pop(self):
-        if len(self.queue) == 0:
-            return None
-        tmp = self.queue[0]
-        self.queue[:] = self.queue[1:]
-        return tmp
-
-    def empty(self):
-        return len(self.queue) == 0
-
-    def size(self):
-        return len(self.queue)
+from priority_queue import PriorityQueue
 
 class Tree:
     def __init__(self, data=None, leafs=None, huffman_data=None, shannon_fano_data=None):
@@ -176,54 +139,3 @@ class Tree:
                 code += '1'
                 node = node.right
         return code
-
-def entropy(x):
-    return numpy.sum(x*numpy.log2(1/x))
-
-def average_code_length(x, func):
-    E = 0.0
-    for (p, e) in x:
-        E += p * len(func(e))
-    return E
-
-################################################################################
-
-if __name__ == '__main__':
-    if len(argv) != 2:
-        help(1)
-    
-    file_name = argv[1]
-    f = None
-    try:
-        f = open(file_name, 'r')
-        contents = f.read().strip()
-    except:
-        help(1)
-    finally:
-        if f != None:
-            f.close()
-    
-    try:
-        x = numpy.array(list(map(float, contents.split('\n'))))
-    except ValueError:
-        help(1)
-    
-    if numpy.sum(x) != 1.0:
-        help(1)
-
-    H = entropy(x)
-    n = range(len(x))
-
-    data = []
-    for i in n:
-        data.append((x[i], i))
-
-    huffman_tree = Tree(huffman_data=data)
-    shannon_fano_tree = Tree(shannon_fano_data=sorted(data, reverse=True))
-
-    E_huffman = average_code_length(data, huffman_tree.findStringCode)
-    E_shannon_fano = average_code_length(data, shannon_fano_tree.findStringCode)
-    
-    print('x entropiaja:\t\t\t\t{}'.format(H))
-    print('atlagos huffman kodszohossz:\t\t{:3.2f}'.format(E_huffman))
-    print('atlagos shannon-fano kodszohossz:\t{:3.2f}'.format(E_shannon_fano))

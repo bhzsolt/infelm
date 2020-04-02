@@ -95,7 +95,11 @@ if __name__ == '__main__':
         for m in message:
             print(tree.findCode(m), end='\t')
         print('\n\tcodes:')
+        E = 0.0
         for (p, e) in data:
-            print('\t\t{}->{}'.format(e, tree.findCode(e)))
+            c = tree.findCode(e)
+            E += p * len(c)
+            print('\t\t{}->{}'.format(e, c))
+        print('\tE(|f(X)|) = {:7.4f}'.format(E))
     if errors:
         help(1)
