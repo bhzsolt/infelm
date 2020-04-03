@@ -12,7 +12,6 @@ def help(exitcode):
     print('\t\twhere left and right have the same format, omitting empty parantheses')
     exit(exitcode)
 
-
 ################################################################################
 
 if __name__ == '__main__':
@@ -24,8 +23,3 @@ if __name__ == '__main__':
     root = t.make_tree(contents)
 
     print(root.sibling())
-    #print(root)
-    #print(root.depth())
-    #node = root.left.right
-    #print(node.parent)
-
